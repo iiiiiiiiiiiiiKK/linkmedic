@@ -1,0 +1,72 @@
+{
+  "name": "linkmedic",
+  "version": "1.0.0",
+  "private": false,
+  "description": "LinkMedic — URL 急诊室: an SSRF-hardened URL diagnostics tool that explains what is wrong with a website and how to fix it.",
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "keywords": [
+    "url-checker",
+    "website-diagnostics",
+    "seo-audit",
+    "ssrf",
+    "cloudflare-workers",
+    "react",
+    "vite",
+    "typescript",
+    "developer-tools"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/iiiiiiiiiiiKK/linkmedic.git"
+  },
+  "bugs": {
+    "url": "https://github.com/iiiiiiiiiiiKK/linkmedic/issues"
+  },
+  "homepage": "https://linkmedic.pages.dev",
+  "scripts": {
+    "dev": "vite",
+    "dev:api": "wrangler pages dev dist --port 8788",
+    "build": "vite build",
+    "build:server": "node scripts/build-server.mjs",
+    "build:all": "npm run build && npm run build:server",
+    "preview": "npm run build:all && node server/index.mjs",
+    "start": "node server/index.mjs",
+    "typecheck": "tsc -p tsconfig.json --noEmit && tsc -p tsconfig.functions.json --noEmit",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "node e2e/run-e2e.mjs",
+    "test:live": "node e2e/live-targets.mjs",
+    "screenshots": "node scripts/capture-screenshots.mjs",
+    "verify": "npm run typecheck && npm run lint && npm run test && npm run build",
+    "deploy": "npm run build && wrangler pages deploy dist --project-name linkmedic --branch=main"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^5.20261019.1",
+    "@eslint/js": "^10.0.1",
+    "@types/node": "^22.10.2",
+    "@types/react": "^18.3.18",
+    "@types/react-dom": "^18.3.5",
+    "@vitejs/plugin-react": "^4.3.4",
+    "esbuild": "^0.25.0",
+    "eslint": "^9.39.5",
+    "eslint-plugin-react-hooks": "^5.1.0",
+    "playwright-core": "^1.49.1",
+    "prettier": "^3.4.2",
+    "typescript": "^5.7.2",
+    "typescript-eslint": "^8.72.0",
+    "vite": "^6.0.5",
+    "vitest": "^2.1.8",
+    "wrangler": "^4.151.3"
+  }
+}

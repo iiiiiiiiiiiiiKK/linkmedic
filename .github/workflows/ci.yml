@@ -1,0 +1,117 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: Typecheck, lint, test, build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Typecheck (frontend + functions)
+        run: npm run typecheck
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Unit and integration tests
+        run: npm test
+
+      - name: Production build
+        run: npm run build
+
+      - name: Build the self-host server bundle
+        run: npm run build:server
+
+      - name: Verify the built server starts and answers /api/health
+        run: |
+          node server/index.mjs &
+          SERVER_PID=$!
+          for i in $(seq 1 20); do
+            if curl -fsS http://127.0.0.1:8787/api/health > /dev/null; then break; fi
+            sleep 1
+          done
+          curl -fsS http://127.0.0.1:8787/api/health | tee health.json
+          node -e "const h=require('./health.json'); if(h.status!=='ok'||h.runtime!=='node'){process.exit(1)}"
+          kill $SERVER_PID
+
+      - name: Reject private-address targets end to end
+        run: |
+          node server/index.mjs &
+          SERVER_PID=$!
+          for i in $(seq 1 20); do
+            if curl -fsS http://127.0.0.1:8787/api/health > /dev/null; then break; fi
+            sleep 1
+          done
+          for target in "http://127.0.0.1/" "http://169.254.169.254/latest/meta-data/" "http://10.0.0.1/" "file:///etc/passwd"; do
+            code=$(curl -s -o /tmp/body.json -w '%{http_code}' \
+              -X POST http://127.0.0.1:8787/api/analyze \
+              -H 'content-type: application/json' \
+              --data "{\"url\":\"$target\",\"linkCheckLimit\":0}")
+            echo "$target -> $code"
+            if [ "$code" != "422" ]; then echo "expected 422 for $target"; exit 1; fi
+          done
+          kill $SERVER_PID
+
+  e2e:
+    name: Browser E2E (Chromium)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build everything
+        run: |
+          npm run build
+          npm run build:server
+
+      - name: Start the server
+        run: |
+          node server/index.mjs &
+          for i in $(seq 1 20); do
+            if curl -fsS http://127.0.0.1:8787/api/health > /dev/null; then break; fi
+            sleep 1
+          done
+
+      - name: Install Chromium for Playwright
+        run: npx playwright-core install --with-deps chromium
+
+      - name: Run the browser suite
+        env:
+          BASE_URL: http://127.0.0.1:8787
+        run: npm run test:e2e
+
+      - name: Upload screenshots on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-screenshots
+          path: e2e/shots/
+          if-no-files-found: ignore

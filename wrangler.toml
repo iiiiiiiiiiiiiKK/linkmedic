@@ -1,0 +1,15 @@
+name = "linkmedic"
+compatibility_date = "2025-05-01"
+compatibility_flags = ["nodejs_compat"]
+pages_build_output_dir = "./dist"
+
+# KV is used only for the per-IP rate-limit counters. Without it the API still
+# works and reports `rateLimitEnforced: false` in /api/health instead of silently
+# pretending to enforce a limit.
+[[kv_namespaces]]
+binding = "LINKMEDIC_KV"
+id = "012460fba616479a846a011f3400c234"
+
+[vars]
+LINKMEDIC_RATE_LIMIT = "20"
+LINKMEDIC_MAX_LINKS = "25"
