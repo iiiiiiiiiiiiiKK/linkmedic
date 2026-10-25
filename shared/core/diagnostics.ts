@@ -47,7 +47,7 @@ export const DEFAULT_OPTIONS: DiagnosticsOptions = {
 export const MAX_LINK_CHECK_LIMIT = 25;
 
 const USER_AGENT =
-  'LinkMedicBot/1.0 (+https://github.com/iiiiiiiiiiiKK/linkmedic; URL diagnostics; on-demand, no crawling)';
+  'LinkMedicBot/1.0 (+https://github.com/iiiiiiiiiiiiiKK/linkmedic; URL diagnostics; on-demand, no crawling)';
 
 const b = (zh: string, en: string): Bilingual => ({ zh, en });
 

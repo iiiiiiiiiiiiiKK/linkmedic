@@ -10,7 +10,7 @@ than an afterthought.
 Please **do not** open a public issue for a security problem.
 
 - Open a private GitHub security advisory:
-  <https://github.com/iiiiiiiiiiiKK/linkmedic/security/advisories/new>
+  <https://github.com/iiiiiiiiiiiiiKK/linkmedic/security/advisories/new>
 - Or contact the maintainer on X: [@0xkillcoin](https://x.com/0xkillcoin)
 
 Include the URL that triggers the behaviour, the expected vs. actual result, and

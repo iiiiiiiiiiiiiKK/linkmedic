@@ -6,13 +6,13 @@
 
 **Paste a URL. Get a diagnosis you can act on — not a wall of green ticks.**
 
-[![CI](https://github.com/iiiiiiiiiiiKK/linkmedic/actions/workflows/ci.yml/badge.svg)](https://github.com/iiiiiiiiiiiKK/linkmedic/actions/workflows/ci.yml)
+[![CI](https://github.com/iiiiiiiiiiiiiKK/linkmedic/actions/workflows/ci.yml/badge.svg)](https://github.com/iiiiiiiiiiiiiKK/linkmedic/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-1d5fd6.svg)](LICENSE)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.7-3178c6.svg)](https://www.typescriptlang.org/)
 [![Cloudflare Workers](https://img.shields.io/badge/Cloudflare-Workers-f38020.svg)](https://workers.cloudflare.com/)
 [![Tests](https://img.shields.io/badge/tests-157%20unit%20%C2%B7%2028%20e2e-1a6b46.svg)](#-testing)
 
-[**Live demo**](https://linkmedic.pages.dev) · [Security policy](SECURITY.md) · [Report a bug](https://github.com/iiiiiiiiiiiKK/linkmedic/issues)
+[**Live demo**](https://linkmedic.pages.dev) · [Security policy](SECURITY.md) · [Report a bug](https://github.com/iiiiiiiiiiiiiKK/linkmedic/issues)
 
 <a href="https://x.com/0xkillcoin">
   <img src="https://img.shields.io/badge/𝕏-@0xkillcoin-000000?style=for-the-badge&logo=x&logoColor=white" alt="Follow @0xkillcoin on X" />
@@ -122,7 +122,7 @@ Overall 0–100 health score with an A–F grade · per-finding severity (`criti
 ## Quick start
 
 ```bash
-git clone https://github.com/iiiiiiiiiiiKK/linkmedic.git
+git clone https://github.com/iiiiiiiiiiiiiKK/linkmedic.git
 cd linkmedic
 npm install
 ```
@@ -507,7 +507,7 @@ Honest list — these are real, and the UI states them where relevant.
 Issues and pull requests are welcome.
 
 ```bash
-git clone https://github.com/iiiiiiiiiiiKK/linkmedic.git
+git clone https://github.com/iiiiiiiiiiiiiKK/linkmedic.git
 cd linkmedic && npm install
 npm run verify        # typecheck + lint + tests + build — must be green
 ```

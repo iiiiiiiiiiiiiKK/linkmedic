@@ -2,7 +2,7 @@
   "name": "linkmedic",
   "version": "1.0.0",
   "private": false,
-  "description": "LinkMedic — URL 急诊室: an SSRF-hardened URL diagnostics tool that explains what is wrong with a website and how to fix it.",
+  "description": "LinkMedic �?URL 急诊�? an SSRF-hardened URL diagnostics tool that explains what is wrong with a website and how to fix it.",
   "license": "MIT",
   "type": "module",
   "engines": {
@@ -21,10 +21,10 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/iiiiiiiiiiiKK/linkmedic.git"
+    "url": "git+https://github.com/iiiiiiiiiiiiiiiKK/linkmedic.git"
   },
   "bugs": {
-    "url": "https://github.com/iiiiiiiiiiiKK/linkmedic/issues"
+    "url": "https://github.com/iiiiiiiiiiiiiiiKK/linkmedic/issues"
   },
   "homepage": "https://linkmedic.pages.dev",
   "scripts": {
