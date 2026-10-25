@@ -69,10 +69,19 @@ describe('json helper', () => {
     expect(response.headers.get('cache-control')).toBe('no-store');
   });
 
+  it('hardens API responses as well as the HTML shell', () => {
+    const response = json({ ok: true });
+    expect(response.headers.get('x-frame-options')).toBe('DENY');
+    expect(response.headers.get('x-content-type-options')).toBe('nosniff');
+    expect(response.headers.get('content-security-policy')).toContain("frame-ancestors 'none'");
+    expect(response.headers.get('strict-transport-security')).toContain('max-age=');
+  });
+
   it('carries retry-after for rate limiting', () => {
     const response = apiError('rate_limited', 'slow down', 429, 42);
     expect(response.status).toBe(429);
     expect(response.headers.get('retry-after')).toBe('42');
+    expect(response.headers.get('x-frame-options')).toBe('DENY');
   });
 });
 

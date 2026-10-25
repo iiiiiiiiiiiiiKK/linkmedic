@@ -10,7 +10,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-1d5fd6.svg)](LICENSE)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.7-3178c6.svg)](https://www.typescriptlang.org/)
 [![Cloudflare Workers](https://img.shields.io/badge/Cloudflare-Workers-f38020.svg)](https://workers.cloudflare.com/)
-[![Tests](https://img.shields.io/badge/tests-158%20unit%20%C2%B7%2028%20e2e-1a6b46.svg)](#-testing)
+[![Tests](https://img.shields.io/badge/tests-159%20unit%20%C2%B7%2028%20e2e-1a6b46.svg)](#-testing)
 
 [**Live demo**](https://linkmedic.pages.dev) · [Security policy](SECURITY.md) · [Report a bug](https://github.com/iiiiiiiiiiiiiKK/linkmedic/issues)
 
@@ -193,7 +193,7 @@ shared/core/         transport-agnostic logic: url, dns, ip, htmlparse, diagnost
 shared/transport/    edge.ts (fetch) · nodetransport.ts (pinned sockets + TLS)
 functions/           Cloudflare Pages Functions: /api/analyze, /api/health, shared http helpers
 server/              self-host Node server (static + API)
-tests/               Vitest: 158 unit + integration tests
+tests/               Vitest: 159 unit + integration tests
 e2e/                 Playwright-driven browser suite and live-target matrix
 docs/screenshots/    real captures used by this README
 ```
@@ -332,7 +332,7 @@ The UI reads this at boot and **tells the user which engine they are on** instea
 ## Testing
 
 ```bash
-npm test            # 158 unit + integration tests (Vitest, ~2 s)
+npm test            # 159 unit + integration tests (Vitest, ~2 s)
 npm run test:e2e    # 28 browser checks (Chromium, needs a running instance)
 npm run test:live   # 16 real-world target cases (needs network)
 npm run typecheck   # frontend + functions, strict, noUnusedLocals
@@ -340,7 +340,7 @@ npm run lint        # ESLint 9 flat config, 0 problems
 npm run verify      # typecheck + lint + test + build
 ```
 
-### Unit & integration — `158 passed` across 8 files
+### Unit & integration — `159 passed` across 8 files
 
 | File                  | Covers                                                                                                                                                                                                                                          |
 | --------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -432,6 +432,12 @@ LINKMEDIC_MAX_LINKS = "25"
 ```
 
 Functions are picked up automatically from `functions/`. Build command: `npm run build`. Output directory: `dist`. Node version: 20 or 22.
+
+`public/_headers` ships the edge caching + hardening rules that Cloudflare Pages applies to static files (`/assets/*` immutable for a year, the HTML shell `no-cache`), and every API response carries the same `Content-Security-Policy`, `X-Frame-Options`, `X-Content-Type-Options`, `Referrer-Policy`, `Permissions-Policy` and `Strict-Transport-Security` headers. Verify with:
+
+```bash
+curl -sI https://linkmedic.pages.dev/api/health | grep -i 'x-frame-options\|content-security-policy'
+```
 
 > **Why not GitHub Pages?** GitHub Pages serves static files only. LinkMedic's core value is server-side fetching — the browser cannot bypass CORS to measure a third-party site's status code, headers or redirect chain, and a purely client-side build would have to pretend those checks happened. The SPA is deployable anywhere; the API needs a function runtime.
 

@@ -15,6 +15,10 @@ export function json(body: unknown, init: JsonInit = {}): Response {
   const headers: Record<string, string> = {
     'content-type': 'application/json; charset=utf-8',
     'cache-control': 'no-store',
+    // API responses carry the same hardening as the shell: this is cheap defence
+    // in depth (a JSON body is never rendered, but a misconfigured proxy might
+    // still sniff or frame it).
+    ...SECURITY_HEADERS,
     ...init.headers,
   };
   if (init.retryAfter !== undefined) headers['retry-after'] = String(init.retryAfter);
