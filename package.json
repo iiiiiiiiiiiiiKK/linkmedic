@@ -21,10 +21,10 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/iiiiiiiiiiiiiiiKK/linkmedic.git"
+    "url": "git+https://github.com/iiiiiiiiiiiiiKK/linkmedic.git"
   },
   "bugs": {
-    "url": "https://github.com/iiiiiiiiiiiiiiiKK/linkmedic/issues"
+    "url": "https://github.com/iiiiiiiiiiiiiKK/linkmedic/issues"
   },
   "homepage": "https://linkmedic.pages.dev",
   "scripts": {
