@@ -177,15 +177,22 @@ export class NodeTransport implements Transport {
 
       req.on('timeout', () => req.destroy(new Error('timeout')));
       req.on('error', (err: NodeJS.ErrnoException) => {
-        const code = err.code ?? 'network_error';
-        const tlsFailure = /CERT|SSL|TLS|EPROTO|ALTNAME/i.test(String(code)) || /certificate/i.test(err.message);
-        const message =
-          code === 'ETIMEDOUT' || err.message === 'timeout'
-            ? `The request timed out after ${Math.round(opts.timeoutMs / 1000)}s.`
-            : tlsFailure
-              ? 'The TLS handshake failed: the certificate is invalid, expired or issued for another hostname.'
-              : sanitizeMessage(err);
-        const result = failure(started, code === 'ETIMEDOUT' ? 'timeout' : tlsFailure ? 'tls_error' : code, message);
+        const rawCode = err.code ?? '';
+        // `req.destroy(new Error('timeout'))` carries no errno, so the timeout has
+        // to be recognised by its message as well — otherwise a timeout would be
+        // reported as a generic network error and get the wrong advice.
+        const timedOut = rawCode === 'ETIMEDOUT' || rawCode === 'ESOCKETTIMEDOUT' || err.message === 'timeout';
+        const tlsFailure = /CERT|SSL|TLS|EPROTO|ALTNAME/i.test(String(rawCode)) || /certificate/i.test(err.message);
+        const message = timedOut
+          ? `The request timed out after ${Math.round(opts.timeoutMs / 1000)}s.`
+          : tlsFailure
+            ? 'The TLS handshake failed: the certificate is invalid, expired or issued for another hostname.'
+            : sanitizeMessage(err);
+        const result = failure(
+          started,
+          timedOut ? 'timeout' : tlsFailure ? 'tls_error' : rawCode || 'network_error',
+          message,
+        );
         finish({
           ...result,
           ip: pinned.address,

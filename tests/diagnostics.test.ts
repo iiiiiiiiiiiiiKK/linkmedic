@@ -121,6 +121,25 @@ describe('runDiagnostics — failure modes', () => {
     expect(report.findings[0].severity).toBe('critical');
     expect(report.findings[0].id).toBe('page-unreachable');
     expect(report.score.value).toBeLessThanOrEqual(45);
+    // A timeout must get latency advice, not "check your DNS".
+    expect(report.findings[0].recommendation.en).toMatch(/did not answer|timeout/i);
+  });
+
+  it('gives DNS advice when the host does not resolve', async () => {
+    const { transport } = makeTransport({
+      pages: {
+        'https://nxdomain.test/': {
+          status: 0,
+          headers: {},
+          body: '',
+          certificate: null,
+          error: { code: 'dns_error', message: 'The host could not be resolved.' },
+        },
+      },
+    });
+    const { report } = await runDiagnostics(transport, 'https://nxdomain.test/', { linkCheckLimit: 0 });
+    expect(report.findings[0].id).toBe('page-unreachable');
+    expect(report.findings[0].recommendation.en).toMatch(/domain resolves|DNS/i);
   });
 
   it('flags 5xx as critical', async () => {

@@ -1,0 +1,9 @@
+# Prettier skips prose and generated artefacts.
+# Markdown is hand-authored for layout control (badges, tables, HTML blocks), and
+# reformatting it would churn the diff without improving the rendered result.
+README.md
+SECURITY.md
+LICENSE
+docs/
+e2e/shots/
+package-lock.json
